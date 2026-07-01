@@ -8,7 +8,7 @@
   specialArgs = { inherit inputs; };
 
   modules = [
-    ./base.nix
     inputs.g5k.nixosModules.g5k-image-systemd
+    inputs.self.nixosModules.base
   ];
 }).config.system.build.g5k-image
