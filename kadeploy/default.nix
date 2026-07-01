@@ -3,7 +3,7 @@
 }:
 
 let
-  closure = inputs.nixpkgs.lib.nixosSystem {
+  closure = inputs.unstable.lib.nixosSystem {
     inherit (stdenv.hostPlatform) system;
 
     specialArgs = { inherit inputs; };
