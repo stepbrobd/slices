@@ -6,8 +6,6 @@ let
   closure = inputs.unstable.lib.nixosSystem {
     inherit (stdenv.hostPlatform) system;
 
-    specialArgs = { inherit inputs; };
-
     modules = [
       inputs.g5k.nixosModules.g5k-image-systemd
       inputs.self.nixosModules.base
