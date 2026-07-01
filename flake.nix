@@ -16,4 +16,10 @@
   inputs.parts.url = "github:hercules-ci/flake-parts";
   inputs.parts.inputs.nixpkgs-lib.follows = "nixpkgs";
   inputs.systems.url = "github:nix-systems/default";
+  inputs.g5k.url = "github:oar-team/nixos-g5k-image";
+  inputs.g5k.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.g5k.inputs.kapack.follows = "";
+
+  nixConfig.extra-substituters = [ "https://cache.ysun.co" ];
+  nixConfig.extra-trusted-public-keys = [ "cache.ysun.co-1:WxPYwT5g3kt9XhUhHPpNLZKI9HIOsVVAuqSHpok8Qt4=" ];
 }

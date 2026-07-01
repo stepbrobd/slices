@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "g5k": {
+      "inputs": {
+        "kapack": [],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782915509,
+        "narHash": "sha256-PgJK989pgQxxVYlsFoYfE7zlfgOclQLvAoYo/6fWdnU=",
+        "owner": "oar-team",
+        "repo": "nixos-g5k-image",
+        "rev": "40432ca2798695cd38415783df627d5605ca646b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oar-team",
+        "repo": "nixos-g5k-image",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1782723713,
@@ -38,6 +59,7 @@
     },
     "root": {
       "inputs": {
+        "g5k": "g5k",
         "nixpkgs": "nixpkgs",
         "parts": "parts",
         "systems": "systems"
