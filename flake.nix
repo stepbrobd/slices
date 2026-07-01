@@ -4,6 +4,7 @@
 
     flake.overlays.default = final: _: {
       inherit inputs;
+      kadeploy = final.callPackage ./kadeploy { };
       slides = final.callPackage ./slides { };
     };
 
@@ -11,7 +12,7 @@
       _module.args.pkgs = import inputs.nixpkgs { inherit system; overlays = [ inputs.self.overlays.default ]; };
       devShells.default = pkgs.callPackage ./shell.nix { };
       formatter = pkgs.callPackage ./formatter.nix { };
-      packages = { inherit (pkgs) slides; };
+      packages = { inherit (pkgs) kadeploy slides; };
     };
   };
 
