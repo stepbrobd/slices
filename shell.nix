@@ -1,11 +1,14 @@
 { mkShell
+, slides
+, deno
 , nixpkgs-fmt
 }:
 
 mkShell {
-  inputsFrom = [ ];
+  inputsFrom = [ slides ];
 
   packages = [
+    deno
     nixpkgs-fmt
   ];
 }
