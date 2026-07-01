@@ -5,6 +5,7 @@
     flake.overlays.default = final: _: {
       inherit inputs;
       kadeploy = final.callPackage ./kadeploy { };
+      nxc = final.callPackage ./nxc { };
       slides = final.callPackage ./slides { };
     };
 
@@ -14,7 +15,7 @@
       _module.args.pkgs = import inputs.unstable { inherit system; overlays = [ inputs.self.overlays.default ]; };
       devShells.default = pkgs.callPackage ./shell.nix { };
       formatter = pkgs.callPackage ./formatter.nix { };
-      packages = { inherit (pkgs) kadeploy slides; };
+      legacyPackages = { inherit (pkgs) kadeploy nxc slides; };
     };
   };
 

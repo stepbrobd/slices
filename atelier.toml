@@ -6,6 +6,5 @@ systems = ["x86_64-linux", "aarch64-linux"]
 include = [
   "devShells.*.*",
   "formatter.*",
-  "nixosConfigurations.*",
-  "packages.*.*",
+  "legacyPackages.*.**",
 ]
