@@ -2,7 +2,10 @@
   outputs = inputs: inputs.parts.lib.mkFlake { inherit inputs; } {
     systems = import inputs.systems;
 
-    flake.overlays.default = final: _: { slides = final.callPackage ./slides { }; };
+    flake.overlays.default = final: _: {
+      inherit inputs;
+      slides = final.callPackage ./slides { };
+    };
 
     perSystem = { pkgs, system, ... }: {
       _module.args.pkgs = import inputs.nixpkgs { inherit system; overlays = [ inputs.self.overlays.default ]; };
