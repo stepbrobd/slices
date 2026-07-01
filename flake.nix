@@ -21,7 +21,7 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.parts.url = "github:hercules-ci/flake-parts";
   inputs.parts.inputs.nixpkgs-lib.follows = "nixpkgs";
-  inputs.systems.url = "github:nix-systems/default";
+  inputs.systems.url = "github:nix-systems/triplet";
   inputs.g5k.url = "github:oar-team/nixos-g5k-image";
   inputs.g5k.inputs.nixpkgs.follows = "nixpkgs";
   inputs.g5k.inputs.kapack.follows = "";
