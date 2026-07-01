@@ -2,13 +2,16 @@
 , stdenv
 }:
 
-(inputs.nixpkgs.lib.nixosSystem {
-  inherit (stdenv.hostPlatform) system;
+let
+  closure = inputs.nixpkgs.lib.nixosSystem {
+    inherit (stdenv.hostPlatform) system;
 
-  specialArgs = { inherit inputs; };
+    specialArgs = { inherit inputs; };
 
-  modules = [
-    inputs.g5k.nixosModules.g5k-image-systemd
-    inputs.self.nixosModules.base
-  ];
-}).config.system.build.g5k-image
+    modules = [
+      inputs.g5k.nixosModules.g5k-image-systemd
+      inputs.self.nixosModules.base
+    ];
+  };
+in
+closure.config.system.build.g5k-image.overrideAttrs { passthru = { inherit closure; }; }
