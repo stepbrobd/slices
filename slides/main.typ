@@ -40,6 +40,11 @@
   == Grid'5000
 
 
+  - 1
+  - 33
+
+  #set align(center)
+  asdasd
 ]
 
 #slide[
@@ -59,10 +64,6 @@
 ]
 
 #slide[
-  == Kadeploy: machine reservation with OAR3
-]
-
-#slide[
   == Kadeploy: BYO-configuration
 
   // talk a bit about nixos modules
@@ -72,6 +73,10 @@
   == Kadeploy: building your custom image
 
 
+]
+
+#slide[
+  == Kadeploy: machine reservation with OAR3
 ]
 
 #slide[
