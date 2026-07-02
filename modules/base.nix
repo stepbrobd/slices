@@ -59,6 +59,9 @@
       bashInteractive
       nushell
       zsh
+
+      vim
+      nano
     ];
   };
 
