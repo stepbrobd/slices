@@ -18,8 +18,8 @@ the same shared configuration ([`modules/base.nix`](modules/base.nix)):
 - A Grid'5000 account with SSH access set up
   ([getting started](https://www.grid5000.fr/w/Getting_Started)). The commands
   below assume the recommended SSH aliases, e.g. `ssh grenoble.g5k`.
-- [Nix](https://nixos.org/download/) with flakes enabled on the machine where
-  you build (your laptop for Path A, or wherever you run `nxc` for Path B).
+- [Nix](https://github.com/NixOS/nix-installer) with flakes enabled on the
+  machine where you build.
 - This repository:
 
   ```sh
@@ -31,6 +31,13 @@ Everything in this repo is pre-built and cached at `https://cache.ysun.co`
 (declared in [`flake.nix`](flake.nix)'s `nixConfig`). Answer _yes_ when Nix asks
 whether to use the flake's substituters, or pass `--accept-flake-config` to skip
 the prompt. Builds then become downloads.
+
+<!-- deno-fmt-ignore -->
+> [!Important]
+> You should either have Nix installed on your machine
+> (i.e. you will be building everything from your machine and copy the built content to G5K frontend),
+> or you need to run a compute job on G5K and install Nix on that node
+> (i.e. you will be building everything from the compute node and copy the built content to G5K frontend).
 
 ## Repository layout
 
