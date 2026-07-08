@@ -62,17 +62,17 @@
       },
       "locked": {
         "host": "gitlab.inria.fr",
-        "lastModified": 1780063197,
-        "narHash": "sha256-J0/rM+Vw4J4KXjv1Nj3ULGpMXmLvCvDds/2aYaSMfVo=",
+        "lastModified": 1783519269,
+        "narHash": "sha256-UwM88dplqbQ9XkOhkJio852sl2E50Ocqff/WLjjHLXA=",
         "owner": "nixos-compose",
         "repo": "nixos-compose",
-        "rev": "56693b6111e413b003132ebc3c49de3809123e18",
+        "rev": "7670e1112235e1df0d47b81185dc8cdbdf3fc8e7",
         "type": "gitlab"
       },
       "original": {
         "host": "gitlab.inria.fr",
         "owner": "nixos-compose",
-        "ref": "25.05",
+        "ref": "g5k-fix",
         "repo": "nixos-compose",
         "type": "gitlab"
       }

@@ -35,7 +35,7 @@
   inputs.g5k.inputs.nixpkgs.follows = "unstable";
   inputs.g5k.inputs.kapack.follows = "";
 
-  inputs.nxc.url = "gitlab:nixos-compose/nixos-compose/25.05?host=gitlab.inria.fr";
+  inputs.nxc.url = "gitlab:nixos-compose/nixos-compose/g5k-fix?host=gitlab.inria.fr";
   inputs.nxc.inputs.nixpkgs.follows = "stable";
   inputs.nxc.inputs.unstable.follows = "unstable";
   inputs.nxc.inputs.flake-utils.follows = "utils";
