@@ -512,19 +512,35 @@
     spacing: 18pt,
     node("composition.nix", "roles, services, topology", accent: nxc-red),
     arrow,
-    stack(
-      spacing: 10pt,
-      pill("docker", bg: nix-blue),
-      pill("vm", bg: nix-blue),
-      pill("g5k-image", bg: nix-blue),
+    grid(
+      columns: (auto, auto),
+      align: (right + horizon, left + horizon),
+      column-gutter: 12pt,
+      row-gutter: 12pt,
+      text(size: 15pt, fill: muted)[*local*],
+      stack(
+        dir: ltr,
+        spacing: 8pt,
+        pill("docker", bg: nix-blue),
+        pill("nspawn", bg: nix-blue),
+        pill("vm", bg: nix-blue),
+        pill("vm-ramdisk", bg: nix-blue),
+      ),
+
+      text(size: 15pt, fill: muted)[*Grid'5000*],
+      stack(
+        dir: ltr,
+        spacing: 8pt,
+        pill("g5k-image", bg: nxc-red),
+        pill("g5k-nfs-store", bg: nxc-red),
+        pill("g5k-ramdisk", bg: nxc-red),
+      ),
     ),
   ))
 
   #v(12pt)
   #align(center, text(size: 17pt, fill: muted)[
-    #box[*local*: docker / vm] #h(20pt) #sym.arrow.r #h(
-      20pt,
-    ) #box[*deployed*: g5k image]
+    One flavor per target: containers & VMs to *iterate locally*, `g5k-*` to *deploy*.
   ])
 ]
 
@@ -538,9 +554,10 @@
   Iterate on your laptop before touching the cluster:
 
   ```sh
-  nxc build -f vm      # build the vm flavor
-  nxc start            # boot the composition
-  nxc connect          # ssh into the roles
+  nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' \
+      -f vm -C composition::vm nxc/default.nix
+  nxc -d . start       # boot the composition
+  nxc -d . connect     # ssh into the roles
   ```
 
   - Same `composition.nix` you'll deploy to g5k
@@ -558,10 +575,11 @@
   Swap the flavor, reserve, and deploy, all from one composition:
 
   ```sh
-  nxc build -f g5k-image      # build the deployable image
+  nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' \
+      -f g5k-image -C composition::g5k-image nxc/default.nix
   oarsub -I -t deploy -l host=2,walltime=1:00:00
-  nxc start -m $OAR_NODEFILE  # kadeploy under the hood
-  nxc connect                 # into the deployed roles
+  nxc -d . start -m $OAR_NODEFILE  # kadeploy under the hood
+  nxc -d . connect                 # into the deployed roles
   ```
 
   #text(size: 17pt, fill: muted)[
