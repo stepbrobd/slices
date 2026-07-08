@@ -18,7 +18,7 @@ writeShellScriptBin "formatter" ''
   done
   pushd "$root" > /dev/null
 
-  # ${lib.getExe deno} fmt readme.md
+  ${lib.getExe deno} fmt readme.md
   ${lib.getExe nixpkgs-fmt} .
   ${lib.getExe typstyle} --inplace **/*.typ
 
