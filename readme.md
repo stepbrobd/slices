@@ -219,6 +219,10 @@ composition.nodes = {
 Rebuild, and `nxc -d . connect server` drops you into that role, locally in a VM
 or on a real Grid'5000 node, depending on the flavor you built.
 
+Or similarly, you can try to modify the NixOS Compose closure and find
+`switch-to-configuration` and exeute under root to avoid doing the whole
+deployment again (not tested).
+
 ## Resources
 
 - [nixos-compose](https://github.com/oar-team/nixos-compose) and the
