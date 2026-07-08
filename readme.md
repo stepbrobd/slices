@@ -48,7 +48,7 @@ the prompt. Builds then become downloads.
 On your laptop (or any machine with Nix):
 
 ```sh
-nix build .#kadeploy --accept-flake-config
+nix build -L .#kadeploy --accept-flake-config
 ```
 
 `result/` now contains the three deployment artifacts:
@@ -56,6 +56,22 @@ nix build .#kadeploy --accept-flake-config
 - `nixos-x86_64-linux.yaml`: the Kadeploy _environment description_
 - `nixos-x86_64-linux.tar.xz`: the system tarball (the OS itself)
 - `g5k-image-info.json`: kernel/initrd/init metadata
+
+In case you don't have Nix installed or don't want to install Nix, you can SSH
+onto the frontend of the site where you want to deploy the image to, reserve a
+interactive job and install Nix on the compute node and build the Kadeploy image
+there and copy the closure from the compute node's /nix/store back to frontend.
+
+```sh
+ssh grenoble.g5k # or <site>.g5k
+oarsub -I
+# in the compute node
+git clone https://github.com/stepbrobd/slices
+cd slices
+curl http://... # TODO: copy the install script to public dir and invoke
+sudo-g5k su # change to root because user dir is nfs mounted, populating Nix cache is very slow
+nix build -L .#kadeploy --accept-flake-config --no-link --json > result.json
+```
 
 ### 2. Copy it to the site frontend
 
@@ -68,13 +84,22 @@ symlinks. Adjust the site to yours:
 rsync -avL result/ grenoble.g5k:g5k-image/
 ```
 
+Or if you are building the image on the site's compute node:
+
+```sh
+# exit out of root session
+cp -rL $(jq -r '.[0].outputs.out' result.json) ~/g5k-image
+chmod +rw ~/g5k-image
+rm result.json
+```
+
 ### 3. Reserve nodes with OAR
 
 On the frontend, ask for nodes with the _deploy_ job type (required to
 reprovision the OS):
 
 ```sh
-ssh grenoble.g5k
+ssh grenoble.g5k # ignore if you are still in the frontend
 oarsub -I -t deploy -l host=1,walltime=1:00:00
 ```
 
@@ -110,6 +135,12 @@ You have root on bare metal: the whole environment is exactly what
   nodes. They are reimaged before the next user, so each deployment starts from
   a clean slate.
 
+Note: you can also try to directly clone and modify the `slices` repository
+directly on the deployed NixOS compute node (the base module or the entry point
+or wherever you find fit), and build
+`kadeploy.closure.config.system.build.toplevel`, then execute the
+`switch-to-configuration` with root.
+
 ## Path B: NixOS Compose
 
 The composition lives in [`nxc/default.nix`](nxc/default.nix) and is exposed
@@ -129,11 +160,12 @@ nix develop --accept-flake-config
 ### 1. Iterate locally with the `vm` flavor
 
 ```sh
-nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' \
-    -f vm -C composition::vm nxc/default.nix
+# pre build with cache configured
+nix build -L --accept-flake-config --no-link .#nxc."composition::vm"
+# have nxc generate required files
+nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' -f vm -C composition::vm nxc/default.nix
 nxc -d . start       # boot the composition in local VMs
 nxc -d . connect     # ssh into a role (tab per node)
-nxc -d . stop        # tear the VMs down
 ```
 
 Flag cheat-sheet:
@@ -144,9 +176,9 @@ Flag cheat-sheet:
 - `-C composition::vm`: which `composition::flavor` pair to build (`-L` lists
   the valid combinations)
 
-`nxc start`, `connect`, and `stop` pick up the most recent build under
-`./build/`, so they work without extra flags. Other local flavors (`docker`,
-`nspawn`, `vm-ramdisk`) work the same way, just swap the `-f` and `-C` values.
+`nxc start` and `connect` will pick up the most recent build under `./build/`,
+so they work without extra flags. Other local flavors (`docker`, `nspawn`,
+`vm-ramdisk`) work the same way, just swap the `-f` and `-C` values.
 
 ### 2. Deploy the same composition to Grid'5000
 
@@ -155,9 +187,9 @@ practice means the site frontend. Everything is pre-cached for the summer
 school, so ask us if Nix setup on the frontend gives you trouble:
 
 ```sh
+# assuming you've already cloned the repo and either in a local machine or g5k compute node
 # build the deployable image flavor
-nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' \
-    -f g5k-image -C composition::g5k-image nxc/default.nix
+nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' -f g5k-image -C composition::g5k-image nxc/default.nix
 
 # reserve nodes (deploy job type, one host per role)
 oarsub -I -t deploy -l host=1,walltime=1:00:00
