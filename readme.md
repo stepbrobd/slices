@@ -191,6 +191,7 @@ school, so ask us if Nix setup on the frontend gives you trouble:
 # build the deployable image flavor
 nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' -f g5k-image -C composition::g5k-image nxc/default.nix
 
+# FIXME: on g5k build, build directory symlink to nix store need to be copied back to frontend
 # reserve nodes (deploy job type, one host per role)
 oarsub -I -t deploy -l host=1,walltime=1:00:00
 
