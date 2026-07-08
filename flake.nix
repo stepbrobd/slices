@@ -11,11 +11,14 @@
 
     flake.nixosModules.base = ./modules/base.nix;
 
-    perSystem = { pkgs, system, ... }: {
+    perSystem = { pkgs, system, inputs', ... }: {
       _module.args.pkgs = import inputs.unstable { inherit system; overlays = [ inputs.self.overlays.default ]; };
       devShells.default = pkgs.callPackage ./shell.nix { };
       formatter = pkgs.callPackage ./formatter.nix { };
-      legacyPackages = { inherit (pkgs) kadeploy nxc slides; };
+      legacyPackages = {
+        inherit (pkgs) kadeploy nxc slides;
+        inherit (inputs'.nxc.packages) nixos-compose;
+      };
     };
   };
 
