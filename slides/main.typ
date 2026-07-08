@@ -577,13 +577,13 @@
   ```sh
   nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' \
       -f g5k-image -C composition::g5k-image nxc/default.nix
-  oarsub -I -t deploy -l host=2,walltime=1:00:00
+  oarsub -I -t deploy -l host=1,walltime=1:00:00
   nxc -d . start -m $OAR_NODEFILE  # kadeploy under the hood
   nxc -d . connect                 # into the deployed roles
   ```
 
   #text(size: 17pt, fill: muted)[
-    `nxc` drives Kadeploy for you. The local `vm` run and this deployment share one description.
+    `nxc` invokes Kadeploy for you
   ]
 ]
 
@@ -607,7 +607,7 @@
       #text(
         fill: nxc-red,
         weight: "bold",
-      )[Match the `nxc` release to your nixpkgs.]
+      )[Match the `nxc` release to your nixpkgs (currently outdated).]
     ],
     image("figs/linked_to_anecosystem.png", width: 100%),
   )
@@ -633,6 +633,8 @@
 // =====================================================================
 #slide[
   == Your turn
+
+  `https://github.com/stepbrobd/slices`
 
   #grid(
     columns: (1fr, 1fr),
@@ -661,6 +663,6 @@
     size: 22pt,
     fill: nix-blue,
     weight: "bold",
-  )[Merci ! Questions?])
+  )[Questions?])
   #align(center, text(size: 15pt, fill: muted, author.join(", ")))
 ]
