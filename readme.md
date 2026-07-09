@@ -75,7 +75,7 @@ oarsub -I
 # in the compute node
 git clone https://github.com/stepbrobd/slices
 cd slices
-curl http://... # TODO: copy the install script to public dir and invoke
+curl -sSf http://public.grenoble.grid5000.fr/~yisun/install-nix.sh | sudo-g5k bash
 sudo-g5k su # change to root because user dir is nfs mounted, populating Nix cache is very slow
 nix build -L .#kadeploy --accept-flake-config --no-link --json > result.json
 ```
