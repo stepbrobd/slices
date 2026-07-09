@@ -116,7 +116,7 @@
     [
       #pill("~30 min", bg: nix-blue) *Mini-lecture + demo*
       - The reproducibility problem
-      - Grid'5000, Kadeploy & Kavlan
+      - Grid'5000, Kadeploy
       - What is Nix (DSL and FPM) and NixOS
       - Custom Kadeploy image vs NixOS Compose
     ],
@@ -226,8 +226,6 @@
     node("OAR", "compute nodes reservation"),
     arrow,
     node("Kadeploy", "bring your own OS image"),
-    arrow,
-    node("Kavlan", "isolate nodes in a VLAN", accent: nxc-red),
   ))
 ]
 
@@ -245,7 +243,6 @@
       disk, and reboots them into *your* OS.
 
       - User managed environment: kernel, services, packages, etc.
-      - *Kavlan* puts those nodes on an isolated VLAN for clean network experiments
     ],
     [
       #align(center, box(fill: panel, radius: 8pt, inset: 14pt, width: 100%)[
