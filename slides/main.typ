@@ -170,7 +170,6 @@
   Usual tools stop short:
   - *Containers*: the `Dockerfile` still runs `apt update` / `curl` #sym.arrow.r drifts
   - *Environment modules*: cluster-specific, hard to modify or move
-  - *Spack*: better, but still shared as opaque modules
 ]
 
 // =====================================================================
@@ -383,7 +382,7 @@
     meh,
     [#yes #text(size: 13pt, fill: muted)[docker/vm]],
 
-    [Multi-node topology], meh, meh, [#yes built-in],
+    [Multi-node support], meh, meh, [#yes built-in],
     [Needs NFS store on g5k], no, no, [#meh depends on flavor],
     [Rebuild after deploy?],
     [likely],
@@ -510,7 +509,7 @@
   #align(center, stack(
     dir: ltr,
     spacing: 18pt,
-    node("composition.nix", "roles, services, topology", accent: nxc-red),
+    node("composition.nix", "roles, services, relationships", accent: nxc-red),
     arrow,
     grid(
       columns: (auto, auto),
@@ -601,7 +600,7 @@
     [
       - Needs an *NFS store* on g5k to share the closure across nodes
       - Pinned to a nixpkgs release, with *breaking changes* across versions (e.g. systemd)
-      - Powerful for *distributed* topologies, though heavier than a single custom image
+      - Powerful for *distributed* experiments, though heavier than a single custom image
 
       #v(6pt)
       #text(
