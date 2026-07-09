@@ -166,6 +166,9 @@ nix develop --accept-flake-config
 
 ### 1. Iterate locally with the `vm` flavor
 
+Note: it is recommended you start the G5K demo below, and while waiting for the
+execution to finish on that side (takes quite a while), do the `vm` flavor!
+
 ```sh
 # pre build with cache configured
 nix build -L --accept-flake-config --no-link .#nxc."composition::vm"
@@ -202,7 +205,14 @@ ssh grenoble.g5k # or <site>.g5k
 git clone https://github.com/stepbrobd/slices
 cd slices
 # install static nix on frontend for your user
-nix run .#nixos-compose -- helper install-nix
+# skip the following nix bootstrapping if you've already done it
+# oarsub -I
+# curl -sSf http://public.grenoble.grid5000.fr/~yisun/install-nix.sh | sudo-g5k bash
+# nix run .#nixos-compose -- helper install-nix
+# mkdir -p ~/.config/nix
+# echo "extra-experimental-features = flakes nix-command" > ~/.config/nix/nix.conf
+# echo "export PATH=$PATH:~/.local/bin" >> ~/.bash_profile
+# source ~/.bash_profile
 # build the deployable image flavor
 nix run .#nixos-compose -- -d . build -N '.#legacyPackages.x86_64-linux.nxc' -f g5k-image -C composition::g5k-image nxc/default.nix
 
