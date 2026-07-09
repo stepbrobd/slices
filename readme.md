@@ -193,18 +193,24 @@ Run these where both `nxc` and the Grid'5000 tools are available, which in
 practice means the site frontend. Everything is pre-cached for the summer
 school, so ask us if Nix setup on the frontend gives you trouble:
 
-```sh
-# assuming you've already cloned the repo and either in a local machine or g5k compute node
-# build the deployable image flavor
-nxc -d . build -N '.#legacyPackages.x86_64-linux.nxc' -f g5k-image -C composition::g5k-image nxc/default.nix
+Note that you CANNOT build the image on your own machine and copy to frontend
+for nxc remote deployment, follow the below commands carefully.
 
-# FIXME: on g5k build, build directory symlink to nix store need to be copied back to frontend
-# reserve nodes (deploy job type, one host per role)
+```sh
+ssh grenoble.g5k # or <site>.g5k
+# clone and/or cd in the slices tutorial repository
+git clone https://github.com/stepbrobd/slices
+cd slices
+# install static nix on frontend for your user
+nix run .#nixos-compose -- helper install-nix
+# build the deployable image flavor
+nix run .#nixos-compose -- -d . build -N '.#legacyPackages.x86_64-linux.nxc' -f g5k-image -C composition::g5k-image nxc/default.nix
+
 oarsub -I -t deploy -l host=1,walltime=1:00:00
 
 # deploy (nxc runs kadeploy3 under the hood) and connect
-nxc -d . start -m $OAR_NODEFILE
-nxc -d . connect
+nix run .#nixos-compose -- -d . start -m $OAR_NODEFILE
+nix run .#nixos-compose -- -d . connect
 ```
 
 Exactly the same `nxc/default.nix` you tested locally, only the flavor changed.
@@ -218,14 +224,21 @@ The current composition is a single-role stub. Add roles (= nodes) in
 [`nxc/default.nix`](nxc/default.nix):
 
 ```nix
+# stub
 composition.nodes = {
-  server = { services.nginx.enable = true; };
+  nxc = {
+    services.nginx.enable = true;
+  };
+
+  # if you want to try multi node deployment
+# the OAR reservation must match the node count listed under `composition.nodes`
   client = { };
+  server = { };
 };
 ```
 
 Rebuild, and `nxc -d . connect server` drops you into that role, locally in a VM
-or on a real Grid'5000 node, depending on the flavor you built.
+or on a Grid'5000 node, depending on the flavor you built.
 
 Or similarly, you can try to modify the NixOS Compose closure and find
 `switch-to-configuration` and exeute under root to avoid doing the whole
